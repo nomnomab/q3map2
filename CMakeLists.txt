@@ -35,6 +35,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" ST
     else ()
         message(SEND_ERROR "Requires C++${CMAKE_CXX_STANDARD} or better")
     endif ()
+elseif (MSVC)
+    # CMAKE_CXX_STANDARD is sufficient for MSVC
 else ()
     message(WARNING "Unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}, make sure it supports C++${CMAKE_CXX_STANDARD}")
 endif ()
@@ -52,10 +54,15 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "WASI")
     set(CMAKE_EXE_LINKER_FLAGS "--sysroot=${WASI_SDK_PATH}/share/wasi-sysroot -Wl,--export-all -Wl,--no-entry")
 
 else()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing -fcommon")
+    if (MSVC)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHs-c- /GR-")
+    else()
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing -fcommon")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing -fno-exceptions -fno-rtti")
+    endif()
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing -fno-exceptions -fno-rtti")
 set(CMAKE_POSITION_INDEPENDENT_CODE 1)
 
 #-----------------------------------------------------------------------

@@ -1881,6 +1881,26 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 
 	/* group entities are just for editor convenience, toss all brushes into worldspawn */
 	if ( !noCollapseGroups && funcGroup ) {
+		/* sweep: capture group metadata before the entity is destroyed */
+		if ( numGroupCaptures < MAX_GROUP_CAPTURES ) {
+			groupCapture_t *gc = &groupCaptures[ numGroupCaptures ];
+			gc->mapEntityNum = mapEnt->mapEntityNum;
+
+			const char *v;
+			v = ValueForKey( mapEnt, "_tb_id" );
+			strncpy( gc->tbId, v, sizeof( gc->tbId ) - 1 );
+			v = ValueForKey( mapEnt, "_tb_name" );
+			strncpy( gc->tbName, v, sizeof( gc->tbName ) - 1 );
+			v = ValueForKey( mapEnt, "_tb_group" );
+			strncpy( gc->tbGroup, v, sizeof( gc->tbGroup ) - 1 );
+			v = ValueForKey( mapEnt, "_tb_type" );
+			strncpy( gc->tbType, v, sizeof( gc->tbType ) - 1 );
+
+			if ( gc->tbId[0] != '\0' ) {
+				numGroupCaptures++;
+			}
+		}
+
 		MoveBrushesToWorld( mapEnt );
 		numEntities--;
 		return qtrue;

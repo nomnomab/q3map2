@@ -2166,6 +2166,21 @@ Q_EXTERN int numRedundantIndexes;
 
 Q_EXTERN int numSurfaceModels Q_ASSIGN( 0 );
 
+/* sweep: func_group metadata capture for .groups sidecar file */
+#define MAX_GROUP_CAPTURES 256
+typedef struct {
+	int mapEntityNum;           /* original entity number (before deletion) */
+	char tbId[ 64 ];            /* _tb_id */
+	char tbName[ 128 ];         /* _tb_name */
+	char tbGroup[ 64 ];         /* _tb_group (parent group id) */
+	char tbType[ 32 ];          /* _tb_type */
+} groupCapture_t;
+
+Q_EXTERN groupCapture_t groupCaptures[ MAX_GROUP_CAPTURES ];
+Q_EXTERN int numGroupCaptures Q_ASSIGN( 0 );
+
+void WriteGroupsFile( const char *BSPFilePath );
+
 Q_EXTERN byte debugColors[ 12 ][ 3 ]
 #ifndef MAIN_C
 ;

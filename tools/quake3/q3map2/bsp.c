@@ -809,8 +809,10 @@ void ResetGlobals( void )
 	bspDrawIndexes = ( NULL );
 
 	numBSPDrawSurfaces = ( 0 );
-	numBSPFogs = ( 0 );	
+	numBSPFogs = ( 0 );
 	numBSPAds = ( 0 );
+
+	numGroupCaptures = ( 0 );
 }
 
 /*

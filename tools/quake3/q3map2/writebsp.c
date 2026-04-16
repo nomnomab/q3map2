@@ -418,10 +418,75 @@ void EndBSPFile( qboolean do_write, const char *BSPFilePath, const char *surface
 		/* write the surface extra file */
 		WriteSurfaceExtraFile( surfaceFilePath );
 
+		/* sweep: write func_group sidecar file */
+		WriteGroupsFile( BSPFilePath );
+
 		/* write the bsp */
 		Sys_Printf( "Writing %s\n", BSPFilePath );
 		WriteBSPFile( BSPFilePath );
 	}
+}
+
+
+/*
+   WriteGroupsFile()
+   writes a .groups sidecar mapping BSP face indices to TrenchBroom groups
+*/
+
+void WriteGroupsFile( const char *BSPFilePath ){
+	FILE *f;
+	char groupsPath[ 1024 ];
+	int i, j, faceCount;
+
+	if ( numGroupCaptures == 0 ) {
+		return;
+	}
+
+	/* build path: replace .bsp with .groups */
+	strcpy( groupsPath, BSPFilePath );
+	StripExtension( groupsPath );
+	strcat( groupsPath, ".groups" );
+
+	Sys_Printf( "Writing %s\n", groupsPath );
+	f = fopen( groupsPath, "w" );
+	if ( f == NULL ) {
+		Sys_Printf( "WARNING: could not open %s for writing\n", groupsPath );
+		return;
+	}
+
+	/* write group definitions */
+	fprintf( f, "%d\n", numGroupCaptures );
+	for ( i = 0; i < numGroupCaptures; i++ ) {
+		groupCapture_t *gc = &groupCaptures[ i ];
+		fprintf( f, "%d %s %s %s %s\n",
+			gc->mapEntityNum,
+			gc->tbId,
+			gc->tbName[0] ? gc->tbName : "-",
+			gc->tbGroup[0] ? gc->tbGroup : "-",
+			gc->tbType[0] ? gc->tbType : "-" );
+	}
+
+	/* write face-to-group mappings */
+	/* iterate all draw surfaces: if entityNum matches a captured group, emit the mapping */
+	faceCount = 0;
+	for ( i = 0; i < numMapDrawSurfs; i++ ) {
+		mapDrawSurface_t *ds = &mapDrawSurfs[ i ];
+		if ( ds->outputNum < 0 ) {
+			continue;
+		}
+
+		for ( j = 0; j < numGroupCaptures; j++ ) {
+			if ( ds->entityNum == groupCaptures[ j ].mapEntityNum ) {
+				fprintf( f, "%d %s\n", ds->outputNum, groupCaptures[ j ].tbId );
+				faceCount++;
+				break;
+			}
+		}
+	}
+
+	fclose( f );
+	Sys_Printf( "%9d group definitions\n", numGroupCaptures );
+	Sys_Printf( "%9d face-to-group mappings\n", faceCount );
 }
 
 
