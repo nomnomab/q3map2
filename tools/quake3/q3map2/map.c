@@ -1892,6 +1892,9 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 			v = ValueForKey( mapEnt, "_tb_name" );
 			strncpy( gc->tbName, v, sizeof( gc->tbName ) - 1 );
 			v = ValueForKey( mapEnt, "_tb_group" );
+			if ( v[0] == '\0' ) {
+				v = ValueForKey( mapEnt, "_tb_layer" );
+			}
 			strncpy( gc->tbGroup, v, sizeof( gc->tbGroup ) - 1 );
 			v = ValueForKey( mapEnt, "_tb_type" );
 			strncpy( gc->tbType, v, sizeof( gc->tbType ) - 1 );
