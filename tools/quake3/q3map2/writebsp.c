@@ -458,12 +458,13 @@ void WriteGroupsFile( const char *BSPFilePath ){
 	fprintf( f, "%d\n", numGroupCaptures );
 	for ( i = 0; i < numGroupCaptures; i++ ) {
 		groupCapture_t *gc = &groupCaptures[ i ];
-		fprintf( f, "%d %s %s %s %s\n",
+		fprintf( f, "%d %s %s %s %s %d\n",
 			gc->mapEntityNum,
 			gc->tbId,
 			gc->tbName[0] ? gc->tbName : "-",
 			gc->tbGroup[0] ? gc->tbGroup : "-",
-			gc->tbType[0] ? gc->tbType : "-" );
+			gc->tbType[0] ? gc->tbType : "-",
+			gc->tbHidden );
 	}
 
 	/* write face-to-group mappings */

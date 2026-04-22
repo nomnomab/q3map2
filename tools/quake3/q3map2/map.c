@@ -1895,6 +1895,8 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 			strncpy( gc->tbGroup, v, sizeof( gc->tbGroup ) - 1 );
 			v = ValueForKey( mapEnt, "_tb_type" );
 			strncpy( gc->tbType, v, sizeof( gc->tbType ) - 1 );
+			v = ValueForKey( mapEnt, "_tb_layer_hidden" );
+			gc->tbHidden = ( v[0] == '1' ) ? 1 : 0;
 
 			if ( gc->tbId[0] != '\0' ) {
 				numGroupCaptures++;

@@ -2174,6 +2174,7 @@ typedef struct {
 	char tbName[ 128 ];         /* _tb_name */
 	char tbGroup[ 64 ];         /* _tb_group (parent group id) */
 	char tbType[ 32 ];          /* _tb_type */
+	int tbHidden;               /* _tb_layer_hidden */
 } groupCapture_t;
 
 Q_EXTERN groupCapture_t groupCaptures[ MAX_GROUP_CAPTURES ];
