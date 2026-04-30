@@ -428,8 +428,6 @@ static void ConvertBrush( FILE *f, int num, bspBrush_t *brush, vec3_t origin, qb
 					tv = 2;
 				}
 
-				Sys_FPrintf( SYS_VRB, "ConvertBrush: %s side using shaderWidth/Height = %d x %d for st->texDef solve\n",
-					buildSide->shaderInfo->shader, buildSide->shaderInfo->shaderWidth, buildSide->shaderInfo->shaderHeight );
 				stI[0] = vert[0]->st[0] * buildSide->shaderInfo->shaderWidth; stI[1] = vert[0]->st[1] * buildSide->shaderInfo->shaderHeight;
 				stJ[0] = vert[1]->st[0] * buildSide->shaderInfo->shaderWidth; stJ[1] = vert[1]->st[1] * buildSide->shaderInfo->shaderHeight;
 				stK[0] = vert[2]->st[0] * buildSide->shaderInfo->shaderWidth; stK[1] = vert[2]->st[1] * buildSide->shaderInfo->shaderHeight;

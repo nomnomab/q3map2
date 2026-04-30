@@ -1131,8 +1131,6 @@ static void ParseRawBrush( qboolean onlyLights ){
         if (!isValve) {
             /* ydnar: gs mods: bias texture shift */
             if ( si->globalTexture == qfalse ) {
-                Sys_FPrintf( SYS_VRB, "ParseRawBrush: %s bias-shift using shaderWidth/Height = %d x %d\n",
-                    si->shader, si->shaderWidth, si->shaderHeight );
                 shift[ 0 ] -= ( floor( shift[ 0 ] / si->shaderWidth ) * si->shaderWidth );
                 shift[ 1 ] -= ( floor( shift[ 1 ] / si->shaderHeight ) * si->shaderHeight );
             }

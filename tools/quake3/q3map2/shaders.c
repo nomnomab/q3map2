@@ -696,14 +696,6 @@ void FinishShader( shaderInfo_t *si ){
 	if ( si->shaderWidth == 0 && si->shaderHeight == 0 ) {
 		si->shaderWidth = si->shaderImage->width;
 		si->shaderHeight = si->shaderImage->height;
-		Sys_FPrintf( SYS_VRB, "FinishShader: %s shaderWidth/Height defaulted from image to %d x %d\n",
-			si->shader, si->shaderWidth, si->shaderHeight );
-	}
-	else{
-		Sys_FPrintf( SYS_VRB, "FinishShader: %s shaderWidth/Height explicitly %d x %d (image %d x %d)\n",
-			si->shader, si->shaderWidth, si->shaderHeight,
-			si->shaderImage ? si->shaderImage->width : -1,
-			si->shaderImage ? si->shaderImage->height : -1 );
 	}
 
 	/* legacy terrain has explicit image-sized texture projection */
@@ -1382,8 +1374,6 @@ static void ParseShaderFile( const char *filename ){
 						si->shaderWidth = 0;
 						si->shaderHeight = 0;
 						si->finished = qfalse;
-						Sys_FPrintf( SYS_VRB, "ParseShaderFile: %s subclassed from %s, shaderWidth/Height reset (will re-derive in FinishShader)\n",
-							si->shader, si2->shader );
 					}
 				}
 
@@ -1714,8 +1704,6 @@ static void ParseShaderFile( const char *filename ){
 					si->shaderWidth = atoi( token );
 					GetTokenAppend( shaderText, qfalse );
 					si->shaderHeight = atoi( token );
-					Sys_FPrintf( SYS_VRB, "ParseShaderFile: %s q3map_textureSize set shaderWidth/Height = %d x %d\n",
-						si->shader, si->shaderWidth, si->shaderHeight );
 				}
 
 				/* ydnar: gs mods: q3map_tcGen <style> <parameters> */
