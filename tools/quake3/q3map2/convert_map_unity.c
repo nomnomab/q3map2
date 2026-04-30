@@ -42,6 +42,12 @@ DLL_EXPORT int convert_map_unity(const char* mapFile, const char* fsPath, Output
 	args[argPtr++] = "-fs_basepath";
 	args[argPtr++] = fsPath;
 
+	/* also register fsPath directly with the VFS (no gamepath suffix), so
+	   resources at <fsPath>/textures/... resolve without needing a baseq3-style
+	   subfolder. Sweep bakes textures to <fsPath>/textures/ directly. */
+	args[argPtr++] = "-fs_pakpath";
+	args[argPtr++] = fsPath;
+
 	for (int i = 0; i < inArgsCount; i++)
 	{
 		args[argPtr++] = inArgs[i];

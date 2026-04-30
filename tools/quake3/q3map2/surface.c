@@ -383,6 +383,8 @@ qboolean CalcSurfaceTextureRange( mapDrawSurface_t *ds ){
 	/* find biased texture coordinate mins/maxs */
 	size[ 0 ] = ds->shaderInfo->shaderWidth;
 	size[ 1 ] = ds->shaderInfo->shaderHeight;
+	Sys_FPrintf( SYS_VRB, "CalcSurfaceTextureRange: %s using shaderWidth/Height = %d x %d\n",
+		ds->shaderInfo->shader, size[ 0 ], size[ 1 ] );
 	ds->texMins[ 0 ] = 999999;
 	ds->texMins[ 1 ] = 999999;
 	ds->texMaxs[ 0 ] = -999999;
@@ -999,6 +1001,10 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 			dv->st[ 1 ] = s->vecs[ 1 ][ 3 ] + DotProduct( s->vecs[ 1 ], vTranslated );
 			dv->st[ 0 ] /= si->shaderWidth;
 			dv->st[ 1 ] /= si->shaderHeight;
+			if ( j == 0 ) {
+				Sys_FPrintf( SYS_VRB, "DrawSurfaceForSide: %s old-quake st divided by shaderWidth/Height = %d x %d\n",
+					si->shader, si->shaderWidth, si->shaderHeight );
+			}
 		}
 
 		/* brush primitive texturing */

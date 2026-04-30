@@ -1097,10 +1097,12 @@ static void ParseRawBrush( qboolean onlyLights ){
             }
             else
             {
+                /* consume the un-got token (shift[0]) — first GetToken just clears tokenready */
+                GetToken( qfalse );
                 shift[ 0 ] = atof( token );
                 GetToken( qfalse );
                 shift[ 1 ] = atof( token );
-                
+
                 GetToken( qfalse );
                 rotate = atof( token );
                 GetToken( qfalse );
@@ -1129,6 +1131,8 @@ static void ParseRawBrush( qboolean onlyLights ){
         if (!isValve) {
             /* ydnar: gs mods: bias texture shift */
             if ( si->globalTexture == qfalse ) {
+                Sys_FPrintf( SYS_VRB, "ParseRawBrush: %s bias-shift using shaderWidth/Height = %d x %d\n",
+                    si->shader, si->shaderWidth, si->shaderHeight );
                 shift[ 0 ] -= ( floor( shift[ 0 ] / si->shaderWidth ) * si->shaderWidth );
                 shift[ 1 ] -= ( floor( shift[ 1 ] / si->shaderHeight ) * si->shaderHeight );
             }
